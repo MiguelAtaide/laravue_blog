@@ -14,11 +14,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 // PHP IS AWESOME!
-Route::resource('posts', 'PostController-create');
+//Route::resource('posts', 'PostController-create');
 
 
-Route::resource('posts', '\App\Http\Controllers\PostController')->middleware('auth');;
+//Route::resource('posts', '\App\Http\Controllers\PostController');//->middleware('auth');
 
+/*
 Route::get('simple-route', function () {
     return view('posts.create');
 });
@@ -26,6 +27,7 @@ Route::get('simple-route', function () {
 Route::get('/', function () {
     return view('welcome');
 });
+*/
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia\Inertia::render('Dashboard');

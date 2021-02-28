@@ -14,21 +14,20 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = post::orderBy('title')->paginate(5);
+        $posts = post::orderBy('title')->get();
 
-        return view('posts.index')->with('posts', $posts);
+        return $posts;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
+    public function show($id){
 
+        $post = Post::find($id);
 
-        return view('posts.create');
+        if(!$post){
+            return response()->json(null, 404);  
+        }
+
+        return $post;
     }
 
     /**
@@ -52,36 +51,7 @@ class PostController extends Controller
         $post_temp->user_id = $user->id;
         $post_temp->save();
 
-        return redirect()->route('posts.index');   
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function show(post $post)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(post $post)
-    {
-
-        $user = auth()->user();
-
-        if($post->user_id != $user->id){
-            return "permission denied";
-        }
-
-        return view('posts.edit')->with('post', $post);
+        return response()->json($post_temp, 201);  
     }
 
     /**
@@ -103,7 +73,8 @@ class PostController extends Controller
         $post->content = $request->content;
         $post->save();
 
-        return redirect()->route('posts.index');  
+    
+        return response()->json($post, 200);  
     }
 
     /**
@@ -116,7 +87,7 @@ class PostController extends Controller
     {
         $post->delete();
 
-        return redirect()->route('posts.index');  
+        return response()->json(null, 204);  
     }
    
 }
